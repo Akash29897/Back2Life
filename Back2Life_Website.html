@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Back2Life</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #d0f0f6, #f5f7fa);
+      color: #333;
+    }
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background-color: #219ebc;
+      padding: 1rem;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    nav div {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    nav div:hover {
+      background-color: #126782;
+    }
+    section {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      margin-top: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #023047;
+    }
+    .hidden { display: none; }
+    .emoji {
+      font-size: 2rem;
+      cursor: pointer;
+      margin: 0.5rem;
+      transition: transform 0.2s;
+    }
+    .emoji:hover {
+      transform: scale(1.3);
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 100;
+      text-align: center;
+    }
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 50;
+    }
+    ul li {
+      padding: 0.3rem 0;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div onclick="showTab('motivation')">Motivation</div>
+    <div onclick="showTab('mood')">Mood</div>
+    <div onclick="showTab('habits')">Habits</div>
+    <div onclick="showTab('relax')">Relax</div>
+  </nav>
+
+  <section id="motivation">
+    <h2>Daily Motivation</h2>
+    <p id="quote"></p>
+  </section>
+
+  <section id="mood" class="hidden">
+    <h2>How are you feeling today?</h2>
+    <div id="emojis">
+      <span class="emoji" onclick="showMoodPopup('😢')">😢</span>
+      <span class="emoji" onclick="showMoodPopup('😐')">😐</span>
+      <span class="emoji" onclick="showMoodPopup('🙂')">🙂</span>
+      <span class="emoji" onclick="showMoodPopup('😃')">😃</span>
+      <span class="emoji" onclick="showMoodPopup('🤩')">🤩</span>
+    </div>
+  </section>
+
+  <section id="habits" class="hidden">
+    <h2>Habit of the Day</h2>
+    <p id="habit"></p>
+  </section>
+
+  <section id="relax" class="hidden">
+    <h2>Relaxing Music Suggestions</h2>
+    <ul>
+      <li>Weightless – Marconi Union</li>
+      <li>Clair de Lune – Debussy</li>
+      <li>Bloom – ODESZA</li>
+      <li>Night Owl – Galimatias</li>
+      <li>River Flows in You – Yiruma</li>
+      <li>Ambient Piano – Relaxing Background</li>
+      <li>Healing Flute Meditation</li>
+    </ul>
+    <p>Search any name above on YouTube to listen 🎵</p>
+  </section>
+
+  <div id="popupContainer" class="hidden">
+    <div class="overlay" onclick="closePopup()"></div>
+    <div class="popup" id="popupContent"></div>
+  </div>
+
+  <script>
+    const tabs = ['motivation', 'mood', 'habits', 'relax'];
+
+    function showTab(id) {
+      tabs.forEach(tab => {
+        document.getElementById(tab).classList.add('hidden');
+      });
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function showMoodPopup(emoji) {
+      document.getElementById('popupContent').innerHTML = `<h3>Your Mood: ${emoji}</h3>`;
+      document.getElementById('popupContainer').classList.remove('hidden');
+    }
+
+    function closePopup() {
+      document.getElementById('popupContainer').classList.add('hidden');
+    }
+
+    const quotes = Array.from({length: 365}, (_, i) => `Motivation Quote #${i + 1}`);
+    const habits = Array.from({length: 365}, (_, i) => `Day ${i + 1}: Try this habit today!`);
+    const today = new Date();
+    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+
+    document.getElementById('quote').textContent = quotes[dayOfYear % 365];
+    document.getElementById('habit').textContent = habits[dayOfYear % 365];
+  </script>
+</body>
+</html>
